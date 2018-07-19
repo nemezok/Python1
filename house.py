@@ -10,11 +10,14 @@ def economy(current_day, order, ec_d):
     ec_d['cows'] = lvst.cow(current_day)
     ec_d['berrybush'] = plants.berrybush(current_day)
 
-    report = 'There are\n {} corns\n {} bunnies\n {} milk\n {} berries'.\
+    ec_d['berrybush'] = plants.berrybush(current_day)
+
+    report = 'There are\n {} corns\n {} bunnies\n {} milk\n {} bushes, {} berries'.\
         format(ec_d['corns'],
                ec_d['bunnies'],
                ec_d['cows'],
-               ec_d['berrybush']
+               ec_d['berrybush'][0],
+               ec_d['berrybush'][1]
                )
     return report
 

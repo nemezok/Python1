@@ -6,7 +6,6 @@ def fib(n):
         a, b = b, a + b
     return a
 
-
 def bunnies(day):
     """
     Подсчёт выводка кроликов.

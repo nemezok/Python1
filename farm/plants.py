@@ -10,8 +10,8 @@ def sowing(grains):
     for _ in range(grains):
         i = random.randint(0, 1)
         field.append(i)
-    return field
-    # return [random.randint(0, 1) for _ in range(grains)]
+    #return field
+    return [random.randint(0, 1) for _ in range(grains)]
 
 
 def corn(day):
@@ -28,13 +28,14 @@ def berrybush(day):
     berries = 0
     coef = 1
     bush = 1
+    newbush = 1
     frequency = day // 15
 
     for _ in range(frequency):
         newbush = bush * 15
         coef -= bush / newbush
         bush = newbush
-    for _ in range(day):
-        berries = random.randint(int(bush * coef * 50), int(bush * coef * 100))
 
-    return [bush, berries]
+    return [bush, random.randint(int(bush * coef * 50), int(bush * coef * 100))]
+
+    #return [bush, berries]
