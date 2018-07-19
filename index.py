@@ -1,6 +1,6 @@
-#from colorama import init
+#from colorama import init as initColorama
 from colorama import Fore, Back, Style
-#init()
+#initColorama()
 
 print(Fore.RED + 'some red text')
 print(Back.GREEN + 'and with a green background')
