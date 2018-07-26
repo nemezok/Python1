@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block h1 %}
+Обновить тему {{ topic.name }}
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <div class="form-group">    
+      <input type="hidden" id="topic_id" name="topic_id" value="{{ topic.id }}">
+      <input type="text" class="form-control" id="topic_name" name="topic_name" value="{{ topic.name }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+  </form>
+{% endblock %}

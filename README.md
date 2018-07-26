@@ -12,11 +12,20 @@
 pip install -r requirements.txt
 ```
 
-* Включение DEBUG-режима в Linux
+* Инициализация базы данных (создание схемы БД)
+```
+python init_db.py
+```
+
+* Загрузка фейковых данных для тестирования
+```
+python load_fixtures.py
+```
+
+* Включение DEBUG-режима (опционально)
 ```
 export FLASK_ENV=development
 ```
-(В случае Windows, надо заменить `export` на `set`)
 
 * Запуск веб-сервиса
 ```

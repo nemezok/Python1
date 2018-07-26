@@ -2,81 +2,67 @@ import datetime
 
 from flask import (Flask, request, render_template,
                    redirect, url_for, flash)
-
+import db
 
 app = Flask(__name__)
 app.secret_key = b'simbirsoft73(*&13%*$&^#'
 
-posts = [
-    {
-        'created': datetime.datetime(2018, 6, 13, 13, 00, 00),
-        'author': 'andrey',
-        'title': 'Задача организации',
-        'topic': 'Управление',
-        'body': 'Задача организации, в особенности же новая модель организационной деятельности позволяет выполнять важные задания по разработке модели развития. Равным образом постоянный количественный рост и сфера нашей активности играет важную роль в формировании позиций, занимаемых участниками в отношении поставленных задач. Не следует, однако забывать, что постоянный количественный рост и сфера нашей активности обеспечивает широкому кругу (специалистов) участие в формировании новых предложений. Идейные соображения высшего порядка, а также консультация с широким активом позволяет оценить значение позиций, занимаемых участниками в отношении поставленных задач. Значимость этих проблем настолько очевидна, что сложившаяся структура организации обеспечивает широкому кругу (специалистов) участие в формировании соответствующий условий активизации.'
-    },
-    {
-        'created': datetime.datetime(2018, 6, 13, 19, 45, 43),
-        'author': 'alexey',
-        'title': 'Модернизация модели развития',
-        'topic': 'Развитие',
-        'body': 'Разнообразный и богатый опыт постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации модели развития. С другой стороны дальнейшее развитие различных форм деятельности способствует подготовки и реализации существенных финансовых и административных условий. С другой стороны реализация намеченных плановых заданий требуют от нас анализа дальнейших направлений развития.'
-    },
-    {
-        'created': datetime.datetime(2018, 6, 14, 1, 48, 00),
-        'author': 'andrey',
-        'title': 'Дальнейшее развитие',
-        'topic': 'Развитие',
-        'body': 'Равным образом дальнейшее развитие различных форм деятельности обеспечивает широкому кругу (специалистов) участие в формировании систем массового участия. Не следует, однако забывать, что дальнейшее развитие различных форм деятельности требуют от нас анализа существенных финансовых и административных условий.'
-    },
-    {
-        'created': datetime.datetime(2018, 6, 18, 2, 10, 00),
-        'author': 'mike',
-        'title': 'Краски природы',
-        'topic': 'Природа',
-        'body': 'Среди всего разнообразия природных ландшафтов встречаются такие места, где кажется, что попал в другой, сказочный, мир. Невероятное сочетание и буйство красок заставляют поверить в то, что природа специально собрала всю палитру в одном месте, чтобы показать свою красоту.'
-    },
-    {
-        'created': datetime.datetime(2018, 6, 18, 2, 15, 00),
-        'author': 'mike',
-        'title': 'ЧМ в России',
-        'topic': 'Спорт',
-        'body': 'Иностранцам, до этого не подозревавшим о существовании в России курортов (не медведей и минусовой температуры, а именно курортов), очень нравится. В основном встречаются испанцы, португальцы, бельгийцы и панамцы, но фан-зона в Сочи – срез всего чемпионата мира. Здесь исландец с флагом учил толпу фирменным хлопкам, мексиканцы в шляпах внедрялись в любую испанскую компанию, аргентинцы, колумбийцы, французы, уругвайцы просто соскучились по морю. '
-    },
-]
-
 
 @app.route('/')
 def index():
-    return render_template('posts.html', posts=reversed(posts))
+    posts = db.get_posts()
+    return render_template('posts.html', posts=posts)
 
 
 @app.route('/add_post', methods=['POST', 'GET'])
 def add_post():
     if request.method == 'POST':
-        post = {
-            'created': datetime.datetime.now(),
-            'author': request.form['author'],
-            'title': request.form['title'],
-            'body': request.form['body'],
-            'topic': request.form['topic']
-        }
-        posts.append(post)
+
+        db.add_post(topic_id=request.form['topic_id'],
+                    author=request.form['author'],
+                    title=request.form['title'],
+                    body=request.form['body'])
 
         flash('Новый пост добавлен')
 
         return redirect(url_for('index'))
     else:
-        return render_template('add_post.html')
+        topics = db.get_topics()
+        return render_template('add_post.html', topics=topics)
 
 
 @app.route('/author/<string:author>')
 def author(author):
-    author_posts = [post for post in posts if post['author'] == author]
+    author_posts = db.get_posts_by_author(author)
 
     return render_template('author.html',
                            author=author,
                            posts=author_posts)
+
+
+@app.route('/topics')
+def topics():
+    topics = db.get_topics()
+
+    return render_template('topics.html',
+                           topics=topics)
+
+
+@app.route('/topics/<int:topic_id>', methods=['POST', 'GET'])
+def topic(topic_id):
+    topic = db.get_topic(topic_id)
+
+    if request.method == 'POST':
+        topic_id = request.form['topic_id']
+        new_topic_name = request.form['topic_name']
+        db.update_topic(topic_id, new_topic_name)
+
+        flash('Тема "{0}" теперь называется "{1}"'.format(topic['name'], new_topic_name))
+
+        return redirect(url_for('topics'))
+
+    return render_template('topic.html',
+                           topic=topic)
 
 
 @app.route("/about")

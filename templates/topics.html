@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block h1 %}
+Темы
+{% endblock %}
+
+{% block content %}
+  {% for topic in topics %}
+    <div class='topic'>
+      <a href="/topics/{{ topic.id }}">{{ topic.name }}</a>
+    </div>
+    <hr>
+  {% endfor %}
+{% endblock %}
