@@ -1,16 +1,41 @@
 import db
 
 fixtures_sql = '''
-INSERT INTO topic (id, name) VALUES (1, "Управление");
-INSERT INTO topic (id, name) VALUES (2, "Развитие");
-INSERT INTO topic (id, name) VALUES (3, "Природа");
-INSERT INTO topic (id, name) VALUES (4, "Спорт");
-
-INSERT INTO post (id, topic_id, created, author, title, body) VALUES (
-  1, 1, "2018-06-13 13:00:00", "andrey", "Задача организации", "Задача организации, в особенности же новая модель организационной деятельности"
+INSERT INTO catalog (title, descr, price, image) VALUES (
+  "Супермясная",
+  "Цыпленок, говядина (фарш), пикантная пепперони, томатный соус, острая чоризо, моцарелла и бекон",
+  "395,545,755",
+  "a.jpg"
 );
-INSERT INTO post (id, topic_id, created, author, title, body) VALUES (
-  2, 2, "2018-06-13 19:45:43", "alexey", "Модернизация модели развития", "Разнообразный и богатый опыт постоянный количественный рост и сфера нашей"
+INSERT INTO catalog (title, descr, price, image) VALUES (
+  "Четыре сыра",
+  "Сыр блючиз, томатный соус, моцарелла и смесь сыров чеддер и пармезан",
+  "275,415,515",
+  "b.jpg"
+);
+INSERT INTO catalog (title, descr, price, image) VALUES (
+  "Мясная",
+  "Цыпленок, ветчина, пикантная пепперони, томатный соус, острая чоризо и моцарелла",
+  "275,415,515",
+  "c.jpg"
+);
+INSERT INTO catalog (title, descr, price, image) VALUES (
+  "Ветчина и грибы",
+  "Ветчина, томатный соус, шампиньоны и моцарелла",
+  "275,415,515",
+  "d.jpg"
+);
+INSERT INTO catalog (title, descr, price, image) VALUES (
+  "Маргарита",
+  "Томатный соус, моцарелла, томаты и орегано",
+  "275,415,515",
+  "e.jpg"
+);
+INSERT INTO catalog (title, descr, price, image) VALUES (
+  "Четыре сезона",
+  "Ветчина, пикантная пепперони, томатный соус, кубики брынзы, шампиньоны, моцарелла, томаты и орегано",
+  "275,415,515",
+  "f.jpg"
 );
 '''
 

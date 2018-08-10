@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block h1 %}
+Каталог пицц
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    {% for pizza in catalog %}
+      <div class='col-4 loop-pizza'>
+        <a href="/catalog/{{ pizza.ID }}/">{{ pizza.title }}</a>
+        <div>{{ pizza.descr }}</div>
+        <div>
+          <div>25см: {{ pizza.price[0] }}</div>
+          <div>30см: {{ pizza.price[1] }}</div>
+          <div>35см: {{ pizza.price[2] }}</div>
+        </div>
+        <form action="" method="post">
+          <input name="pizza_id" type="hidden" value="{{ pizza.ID }}">
+          <button type="submit">Добавить в корзину</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

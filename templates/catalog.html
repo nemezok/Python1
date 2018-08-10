@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Каталог{% endblock %}
+{% block h1 %}Каталог{% endblock %}
+
+{% block content %}
+  <div class="row">
+    {% for pizza in catalog %}
+      <div class='col-12 col-sm-6 col-md-4 loop-pizza'><div>
+        <img src="{{ url_for('static', filename=pizza.image) }}">
+        <h4>{{ pizza.title }}</h4>
+        <article>{{ pizza.descr }}</article>
+        <div class="price">
+          <div>25см: {{ pizza.price[0] }}</div>
+          <div>30см: {{ pizza.price[1] }}</div>
+          <div>35см: {{ pizza.price[2] }}</div>
+        </div>
+        <form action="" method="post">
+          <input name="pizza_id" type="hidden" value="{{ pizza.ID }}">
+          <button type="submit">Добавить в корзину</button>
+        </form>
+      </div></div>
+    {% endfor %}
+  </div>
+{% endblock %}

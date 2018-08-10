@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Корзина{% endblock %}
+{% block h1 %}Корзина{% endblock %}
+
+{% block content %}
+  {% if cart|length %}
+    <div class="row">
+      {% for pizza in cart %}
+        <div class='col-12 col-sm-6 col-md-4 loop-pizza'><div>
+            <img src="{{ url_for('static', filename=pizza.image) }}">
+            <h4>{{ pizza.title }}</h4>
+            <article>{{ pizza.descr }}</article>
+            <div class="price">
+              <div>25см: {{ pizza.price[0] }}</div>
+              <div>30см: {{ pizza.price[1] }}</div>
+              <div>35см: {{ pizza.price[2] }}</div>
+            </div>
+            <form action="" method="post">
+              <input name="pizza_id" type="hidden" value="{{ pizza.ID }}">
+              <button type="submit">Удалить из корзины</button>
+            </form>
+        </div></div>
+      {% endfor %}
+    </div>
+
+    <div class="row">
+        <div class="hidden-xs col-md-3"></div>
+        <div class="col-12 col-md-6">
+            <form action="" method="post" id="cartorderform">
+              <input name="fio" type="text" value="" required placeholder="Имя">
+              <input name="phone" type="tel" value="" required placeholder="Номер телефона">
+              <input name="address" type="text" value="" required placeholder="Адрес">
+              <button type="submit">Оформить заказ</button>
+            </form>
+        </div>
+    </div>
+  {% else %}
+    <div>В корзине нет товаров<br>Перейдите в <a href="/catalog/">каталог</a> для добавления</div>
+  {% endif %}
+{% endblock %}

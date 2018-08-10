@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Заказы{% endblock %}
+{% block h1 %}Заказы{% endblock %}
+
+{% block content %}
+  {% if orders|length %}
+      {% for order in orders %}
+        <div class='row loop-order status{{ order.status }}'>
+          <div class="col-4">
+              <h2>Заказ № {{ order.ID }}</h2>
+              <div>Статус:
+                  <form method="post">
+                      <input name="order_id" type="hidden" value="{{ order.ID }}">
+                      <select name="status">
+                          {% for s in statuslist %}
+                          <option value="{{ s }}" {% if s == order.status %}selected{% endif %}>{{ statuslist[s] }}</option>
+                          {% endfor %}
+                      </select>
+                      <button type="submit">Изменить</button>
+                  </form>
+              </div>
+              <div>Клиент: <strong>{{ order.fio }}</strong></div>
+              <div>Номер телефона: <strong>{{ order.phone }}</strong></div>
+              <div>Адрес: <strong>{{ order.address }}</strong></div>
+              <div>Время: <strong>{{ order.time }}</strong></div>
+          </div>
+          <div class="col-8">
+            {% for pizza in order.itemlist %}
+                <div class='loop-pizza'>
+                  <a href="/catalog/{{ pizza.ID }}/">{{ pizza.title }}</a>
+                  <div>
+                    <div>{{ pizza.price[0] }} руб.</div>
+                  </div>
+                </div>
+            {% endfor %}
+            <div>Сумма заказа: {{ order.summprice }} руб.</div>
+          </div>
+        </div>
+      {% endfor %}
+  {% else %}
+    <div>Нет заказов</div>
+  {% endif %}
+{% endblock %}

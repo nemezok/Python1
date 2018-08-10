@@ -1,70 +1,64 @@
-import datetime
-
 from flask import (Flask, request, render_template,
-                   redirect, url_for, flash)
-import db
+                   redirect, url_for, flash, session)
+import datetime
+import pizza
 
 app = Flask(__name__)
 app.secret_key = b'simbirsoft73(*&13%*$&^#'
 
-
 @app.route('/')
 def index():
-    posts = db.get_posts()
-    return render_template('posts.html', posts=posts)
+    return render_template('index.html')
 
+#@app.route('/author/<string:author>')
+#def author(author):
+    #author_posts = db.get_posts_by_author(author)
+    #return render_template('author.html', author=author, posts=author_posts)
 
-@app.route('/add_post', methods=['POST', 'GET'])
-def add_post():
+# КАТАЛОГ
+@app.route('/catalog/', methods=['POST', 'GET'])
+def catalog():
     if request.method == 'POST':
+        pizza.addtocart(request.form)
+        return redirect(url_for('catalog'))
 
-        db.add_post(topic_id=request.form['topic_id'],
-                    author=request.form['author'],
-                    title=request.form['title'],
-                    body=request.form['body'])
+    return render_template('catalog.html', catalog=pizza.list())
 
-        flash('Новый пост добавлен')
-
-        return redirect(url_for('index'))
-    else:
-        topics = db.get_topics()
-        return render_template('add_post.html', topics=topics)
-
-
-@app.route('/author/<string:author>')
-def author(author):
-    author_posts = db.get_posts_by_author(author)
-
-    return render_template('author.html',
-                           author=author,
-                           posts=author_posts)
-
-
-@app.route('/topics')
-def topics():
-    topics = db.get_topics()
-
-    return render_template('topics.html',
-                           topics=topics)
-
-
-@app.route('/topics/<int:topic_id>', methods=['POST', 'GET'])
-def topic(topic_id):
-    topic = db.get_topic(topic_id)
-
+# КОРЗИНА
+@app.route('/cart/', methods=['POST', 'GET'])
+def cart():
+    pizza.cart_init()
     if request.method == 'POST':
-        topic_id = request.form['topic_id']
-        new_topic_name = request.form['topic_name']
-        db.update_topic(topic_id, new_topic_name)
+        if ('fio' in request.form):
+            pizza.addorder(request.form)
+            return redirect(url_for('cart'))
+        if ('pizza_id' in request.form):
+            pizza.removefromcart(request.form)
+            return redirect(url_for('cart'))
+    return render_template('cart.html', cart=pizza.list(','.join(session['cart'])))
 
-        flash('Тема "{0}" теперь называется "{1}"'.format(topic['name'], new_topic_name))
+# АДМИНКА
+@app.route('/profile/', methods=['POST', 'GET'])
+def profile():
 
-        return redirect(url_for('topics'))
+    return render_template('admin.html')
 
-    return render_template('topic.html',
-                           topic=topic)
+# ЗАКАЗЫ
+@app.route('/profile/orders/', methods=['POST', 'GET'])
+def orders():
+    if request.method == 'POST':
+        if ('status' in request.form):
+            pizza.orderstatus(request.form)
+            return redirect(url_for('orders'))
 
+    return render_template('orders.html', orders=pizza.get_orders(), statuslist=pizza.statuslist())
 
-@app.route("/about")
-def about():
-    return render_template('about.html')
+# Добавление\удаление товаров
+@app.route('/profile/products/', methods=['POST', 'GET'])
+def products():
+    if request.method == 'POST':
+        if ('status' in request.form):
+            pizza.orderstatus(request.form)
+            return redirect(url_for('orders'))
+
+    return render_template('orders.html', orders=pizza.get_orders(), statuslist=pizza.statuslist())

@@ -1,0 +1,41 @@
+body{
+
+}
+header, footer{background: #e0b080;}
+header a, footer a{color:white;}
+main input, main button, main select{
+    width: 100%;
+    padding: 0 3px;
+    box-sizing: border-box;
+    font-size: 16px;
+    border: 1px solid #e0b080;
+}
+main input{}
+main button{
+    background: #e0b080;
+    color: white;
+}
+
+
+.loop-pizza{margin-bottom: 30px;}
+.loop-pizza > div{
+    margin: 0 auto;
+    box-shadow: 2px 2px 3px grey;
+    padding: 10px;
+}
+.loop-pizza img{max-width: 100%;}
+.loop-pizza h4{}
+.loop-pizza article{}
+.loop-pizza .price{}
+.loop-pizza form{}
+.loop-pizza form button{
+    background: #e0b080;
+    color: white;
+    border: none;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#cartorderform{}
+#cartorderform input{margin-bottom:15px;}
+#cartorderform button{}
