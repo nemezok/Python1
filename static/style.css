@@ -39,3 +39,16 @@ main button{
 #cartorderform{}
 #cartorderform input{margin-bottom:15px;}
 #cartorderform button{}
+
+.loop-order{
+    margin-bottom: 40px;
+    border: 1px solid #e0b080;
+    padding: 10px 0;
+}
+.loop-order.status0{}
+.loop-order.status1{}
+.loop-order.status2{}
+.loop-order.status3{}
+.loop-order .statusform > *{
+    margin-bottom:15px;
+}

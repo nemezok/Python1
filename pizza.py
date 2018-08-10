@@ -39,18 +39,20 @@ def addtocart (data):
     if(data['pizza_id'] not in session['cart']):
         session['cart'].append(data['pizza_id'])
         session.modified = True
+        flash('Товар добавлен в корзину')
 
     return 'success'
 
 def removefromcart (data):
     del session['cart'][session['cart'].index(data['pizza_id'])]
     session.modified = True
+    flash('Товар удален из корзины')
     return 'success'
 
 def get_orders ():
     conn, cur = db.get_db()
     rows = cur.execute(
-        'SELECT * FROM orders'
+        'SELECT * FROM orders ORDER BY ID'
     ).fetchall()
 
     data = []
@@ -73,6 +75,7 @@ def get_orders ():
             'summprice': summprice
         })
 
+    data.reverse()
     return data
 
 def addorder (data):
@@ -85,11 +88,10 @@ def addorder (data):
     conn.commit()
     del session['cart']
     session.modified = True
-    flash('Ваш заказ успешно оформлен')
+    flash('Ваш заказ принят')
     return ''
 
 def orderstatus(data):
-    print(data)
     conn, cur = db.get_db()
     cur.execute(
         'UPDATE orders SET status = ? WHERE ID = ?',
